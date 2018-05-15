@@ -7,20 +7,11 @@
 [![GitHub commits](https://img.shields.io/github/commits-since/genedelisa/AUApp/1.0.0.svg)
 [![GitHub version](https://badge.fury.io/gh/genedelisa%2FAUApp)](https://github.com/genedelisa/AUApp)
 [![GitHub stars](https://img.shields.io/github/stars/genedelisa/AUApp.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/genedelisa/AUApp/stargazers/)
-
-[![Swift 2](https://img.shields.io/badge/swift2-compatible-4BC51D.svg?style=flat")](https://developer.apple.com/swift)
-
-[![Swift 3](https://img.shields.io/badge/swift3-compatible-4BC51D.svg?style=flat")](https://developer.apple.com/swift)
-
 [![Swift 4](https://img.shields.io/badge/swift4-compatible-4BC51D.svg?style=flat")](https://developer.apple.com/swift)
-
-[![Platforms macOS | iOS](https://img.shields.io/badge/Platforms-OS%20X%20%7C%20iOS-lightgray.svg?style=flat)](https://swift.org/)
-[![Platforms macOS](https://img.shields.io/badge/Platforms-OS%20X-lightgray.svg?style=flat)](https://swift.org/)
 [![Platforms iOS](https://img.shields.io/badge/Platforms-iOS-lightgray.svg?style=flat)](https://swift.org/)
 
 [![Sponsors](https://img.shields.io/badge/Sponsors-Rockhopper%20Technologies-orange.svg?style=flat)](http://www.rockhoppertech.com/)
 [![Twitter @GeneDeLisaDev](https://img.shields.io/twitter/follow/GeneDeLisaDev.svg?style=social)](https://twitter.com/GeneDeLisaDev)
-
 
 
 An example of a simple AUv3 MIDI extension
@@ -28,7 +19,7 @@ An example of a simple AUv3 MIDI extension
 
 ## Blog post for this example.
 
-[Blog post] (http://www.rockhoppertech.com/blog/auv3-midi/)
+[Blog post](http://www.rockhoppertech.com/blog/auv3-midi/)
 
 
 ## Bugs
