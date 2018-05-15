@@ -1,0 +1,16 @@
+# .slather.yml
+
+xcodeproj: AUApp/AUApp.xcodeproj
+workspace: AUApp.xcworkspace
+scheme: AUApp
+output_directory: ./testcoverage-reports
+
+# source_directory: Pod/Classes
+# binary_basename: AUApp
+# input_format: profdata
+# coverage_service: coveralls
+# ci_service: travis_pro
+# ci_access_token: coveralltoken
+
+ignore:
+- Pods/*
