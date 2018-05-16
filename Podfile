@@ -12,11 +12,8 @@ def shared_pods
     
     # pod 'GDViews', :path => '/Users/gene/Development/xcode/gene/Swift/mypods/GDViews'
     
-    #pod 'XCGLogger', '~> 6.0.1'
     pod 'GDLogger', :path => '/Users/gene/Development/xcode/gene/Swift/mypods/GDLogger'
 
-    
-    
 end
 
 def testing_pods

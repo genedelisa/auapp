@@ -45,5 +45,5 @@
 //  IN THE SOFTWARE.
 //
     
-    
-
+struct Model {
+}

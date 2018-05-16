@@ -1,10 +1,10 @@
 //
-// AUApp
-// ViewController.swift
+// IntervalPlugin
+// IntervalPlugin.h
 //
 // last build: macOS 10.13, Swift 4.0
 //
-// Created by Gene De Lisa on 5/9/18.
+// Created by Gene De Lisa on 5/16/18.
  
 //  Copyright ©(c) 2018 Gene De Lisa. All rights reserved.
 //
@@ -47,19 +47,13 @@
     
     
 
-import UIKit
+#import <Foundation/Foundation.h>
+#import <AudioToolbox/AudioToolbox.h>
 
-class ViewController: UIViewController {
+@interface IntervalPlugin: NSObject
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
+@property AUMIDIOutputEventBlock outputEventBlock;
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+- (void) handleEvent: (AURenderEvent const *)event;
 
-
-}
+@end
