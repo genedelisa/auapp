@@ -48,7 +48,6 @@
 
 
 #import "HeyYouAudioUnit.h"
-#import "IntervalPlugin.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -84,8 +83,6 @@ AUScheduleMIDIEventBlock _scheduleMIDIEventBlock;
 
 AudioStreamBasicDescription asbd; // local copy of the asbd that the render block can capture
 
-IntervalPlugin *intervalPlugin;
-
 
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription options:(AudioComponentInstantiationOptions)options error:(NSError **)outError {
     
@@ -96,8 +93,6 @@ IntervalPlugin *intervalPlugin;
     if (self == nil) {
         return nil;
     }
-    
-    intervalPlugin = [[IntervalPlugin alloc] init];
     
     // Create parameter objects.
     AUParameter *param1 = [AUParameterTree createParameterWithIdentifier:@"param1" name:@"Parameter 1" address:myParam1 min:0 max:100 unit:kAudioUnitParameterUnit_Percent unitName:nil flags:0 valueStrings:nil dependentParameters:nil];
@@ -184,7 +179,6 @@ IntervalPlugin *intervalPlugin;
     if (self.MIDIOutputEventBlock) {
         _outputEventBlock = self.MIDIOutputEventBlock;
         NSLog(@"have a non nil MIDIOutputEventBlock");
-        intervalPlugin.outputEventBlock = _outputEventBlock;
     } else {
         _outputEventBlock = nil;
     }
@@ -232,68 +226,74 @@ IntervalPlugin *intervalPlugin;
 // Block which subclassers must provide to implement rendering.
 - (AUInternalRenderBlock)internalRenderBlock {
     
+    NSLog( @"calling: %s", __PRETTY_FUNCTION__ );
+    
     // Capture in locals to avoid Obj-C member lookups. If "self" is captured in render, we're doing it wrong. See sample code.
     
-    IntervalPlugin *plugin = intervalPlugin;
+    // IntervalPlugin *plugin = intervalPlugin;
+    
+    __block AUMIDIOutputEventBlock out = _outputEventBlock;
+    if (!out) {
+        out = self.MIDIOutputEventBlock;
+    }
+
+    AudioStreamBasicDescription localAsbd = asbd;
     
     return ^AUAudioUnitStatus(AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *timestamp, AVAudioFrameCount frameCount, NSInteger outputBusNumber, AudioBufferList *outputData, const AURenderEvent *realtimeEventListHead, AURenderPullInputBlock pullInputBlock) {
         
         // make this a parameter
         uint8_t interval = 4;
         
+        //you can get the asbd.mSampleRate here
+        
         AURenderEvent const* event = realtimeEventListHead;
-        [plugin handleEvent: event];
+
+        // Don't use self in the render block!
+        // if you have a plugin not written in Objective-C or Swift:
+        // [plugin handleEvent: event];
         
-        // I moved this logic to the plugin. This has a reference cycle. Don't use self in the render block!
-        // it's better to put the processing in dedidicated classes anyway.
-        // I left it here to match the blog post so you can compare
-        // the refactoring.
-        
-        if(NO) {
+        // it's possible to receive a null eventlist, so check first.
+        while (event != NULL) {
             
-            // it's possible to receive a null eventlist, so check first.
-            while (event != NULL) {
+            if (event->head.eventType == AURenderEventMIDI) {
                 
-                if (event->head.eventType == AURenderEventMIDI) {
+                AUMIDIEvent midiEvent = event->MIDI;
+                uint8_t midiStatus = midiEvent.data[0] & 0xF0;
+                // uint8_t channel = midiEvent.data[0] & 0x0F;
+                uint8_t data1 = midiEvent.data[1];
+                uint8_t data2 = midiEvent.data[2];
+                
+                // AUEventSampleTime now = midiEvent.eventSampleTime - timestamp->mSampleTime;
+                AUEventSampleTime now = AUEventSampleTimeImmediate;
+                
+                if( out) {
                     
-                    AUMIDIEvent midiEvent = event->MIDI;
-                    uint8_t midiStatus = midiEvent.data[0] & 0xF0;
-                    // uint8_t channel = midiEvent.data[0] & 0x0F;
-                    uint8_t data1 = midiEvent.data[1];
-                    uint8_t data2 = midiEvent.data[2];
+                    // send back the original unchanged
+                    out(now, 0, event->MIDI.length, event->MIDI.data);
+                    // AUEventSampleTime eventSampleTime, uint8_t cable, NSInteger length, const uint8_t *midiBytes);
                     
-                    // AUEventSampleTime now = midiEvent.eventSampleTime - timestamp->mSampleTime;
-                    AUEventSampleTime now = AUEventSampleTimeImmediate;
+                    // note on
+                    uint8_t bytes[3];
+                    bytes[0] = 0x90;
+                    bytes[1] = data1;
+                    bytes[2] = data2;
+                    if (midiStatus == 0x90 && data2 != 0) {
+                        bytes[1] = data1 + interval;
+                        out(now, 0, 3, bytes);
+                    }
                     
-                    if( _outputEventBlock) {
-                        
-                        // send back the original unchanged
-                        _outputEventBlock(now, 0, event->MIDI.length, event->MIDI.data);
-                        // AUEventSampleTime eventSampleTime, uint8_t cable, NSInteger length, const uint8_t *midiBytes);
-                        
-                        // note on
-                        uint8_t bytes[3];
-                        bytes[0] = 0x90;
-                        bytes[1] = data1;
-                        bytes[2] = data2;
-                        if (midiStatus == 0x90 && data2 != 0) {
-                            bytes[1] = data1 + interval;
-                            _outputEventBlock(now, 0, 3, bytes);
-                        }
-                        
-                        // note off
-                        bytes[0] = 0x90;
-                        bytes[1] = data1;
-                        bytes[2] = 0;
-                        if (midiStatus == 0x90 && data2 == 0) {
-                            bytes[1] = data1 + interval;
-                            _outputEventBlock(now, 0, 3, bytes);
-                        }
+                    // note off
+                    bytes[0] = 0x90;
+                    bytes[1] = data1;
+                    bytes[2] = 0;
+                    if (midiStatus == 0x90 && data2 == 0) {
+                        bytes[1] = data1 + interval;
+                        out(now, 0, 3, bytes);
                     }
                 }
-                
-                event = event->head.next;
             }
+            
+            event = event->head.next;
         }
         
         return noErr;

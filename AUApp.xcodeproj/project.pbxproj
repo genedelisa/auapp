@@ -17,7 +17,6 @@
 		B05FF5D120A355AB00BB2007 /* AudioUnitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05FF5D020A355AB00BB2007 /* AudioUnitViewController.swift */; };
 		B05FF5D420A355AB00BB2007 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B05FF5D220A355AB00BB2007 /* MainInterface.storyboard */; };
 		B05FF5D920A355AB00BB2007 /* HeyYou.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B05FF5CB20A355AB00BB2007 /* HeyYou.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		B0B5F2AE20AC8BEF000BAC0C /* IntervalPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B5F2AD20AC8BEF000BAC0C /* IntervalPlugin.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,8 +72,6 @@
 		B05FF5D320A355AB00BB2007 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		B05FF5D520A355AB00BB2007 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B05FF5D620A355AB00BB2007 /* HeyYou-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HeyYou-Bridging-Header.h"; sourceTree = "<group>"; };
-		B0B5F2AC20AC8BEF000BAC0C /* IntervalPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntervalPlugin.h; sourceTree = "<group>"; };
-		B0B5F2AD20AC8BEF000BAC0C /* IntervalPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntervalPlugin.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,8 +172,6 @@
 		B05FF5CC20A355AB00BB2007 /* HeyYou */ = {
 			isa = PBXGroup;
 			children = (
-				B0B5F2AC20AC8BEF000BAC0C /* IntervalPlugin.h */,
-				B0B5F2AD20AC8BEF000BAC0C /* IntervalPlugin.m */,
 				B05FF5CD20A355AB00BB2007 /* HeyYouAudioUnit.h */,
 				B05FF5CE20A355AB00BB2007 /* HeyYouAudioUnit.m */,
 				B05FF5D020A355AB00BB2007 /* AudioUnitViewController.swift */,
@@ -333,7 +328,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B05FF5CF20A355AB00BB2007 /* HeyYouAudioUnit.m in Sources */,
-				B0B5F2AE20AC8BEF000BAC0C /* IntervalPlugin.m in Sources */,
 				B05FF5D120A355AB00BB2007 /* AudioUnitViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
